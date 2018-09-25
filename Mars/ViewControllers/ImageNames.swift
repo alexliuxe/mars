@@ -7,3 +7,18 @@
 //
 
 import Foundation
+
+struct ImageName
+{
+    struct Resources
+    {
+        static let card = "card"
+        static let cityTitle = "cityTitle"
+        static let cost = "cost"
+        static let greenery = "greenery"
+        static let ocean = "ocean"
+        static let oxygen = "oxygen"
+        static let temperature = "temperature"
+        static let TR = "TR"
+    }
+}
