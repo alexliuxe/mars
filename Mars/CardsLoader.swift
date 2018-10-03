@@ -304,39 +304,89 @@ cards.append(contentsOf: preludes)
                     //
                 }
                 
+                //get VP from vp secion of
+                if let separatorIndex = item.firstIndex(of: "VP: "){
+                }
+                
                 if let separatorIndex = item.firstIndex(of: "------\n    "){
+                    
+                    var results: [OperationResult] = []
+                    var operationResult = OperationResult.none
+
                     if separatorIndex < item.count - 1{
                         for i in separatorIndex+1 ..< item.count {
                             let content = item[i].lowercased()
+                            let splitedItem = content.split(separator: " ")
+
                             if content.contains(str: "increase"){
-                                
+                                //TODO: production check if *
+                                //TODO: check if any-
                             }else if content.contains(str: "decrease") {
-                                
+                                //TODO: production check if *
+                                //TODO: check if any-
                             }else if content.contains(str: "remove"){
+                                //TODO: check if any-
+                                //TODO: check if OR
+                            }else if content.contains(str: "tempup"){
+                                if splitedItem.count > 1{
+                                    operationResult = .tempUp(Int(splitedItem[1]) ?? 1)
+                                }
+                            }else if content.contains(str: "ocean"){
+                                if splitedItem.count > 1{
+                                    operationResult = .ocean(Int(splitedItem[1]) ?? 1)
+                                }
+                            }else if content.contains(str: "tr"){
+                                if splitedItem.count > 1{
+                                    operationResult = .tr(Int(splitedItem[1]) ?? 1)
+                                }
+                            }else if content.contains(str: "o2"){
+                                if splitedItem.count > 1{
+                                    operationResult = .oxygen(Int(splitedItem[1]) ?? 1)
+                                }
+                            }else { //resources
                                 
-                            }else if content.contains(str: "Special Tile"){
+                                //TODO: check if OR
                                 
-                            }else {
-                                let splitedItem = content.split(separator: " ")
-                                if content.contains(str: "tempup"){
+                                //TODO: check if *
+                                
+                                if content.contains(str: "$$"){
                                     if splitedItem.count > 1{
-                                        let op: OperationResult = .tempUp(Int(splitedItem[1]) ?? 1)
-                                        
+                                        operationResult = .tempUp(Int(splitedItem[1]) ?? 1)
                                     }
-                                }else if content.contains(str: "O2"){
-                                }else if content.contains(str: "$$"){
                                 }else if content.contains(str: "steel"){
+                                    if splitedItem.count > 1{
+                                        operationResult = .tempUp(Int(splitedItem[1]) ?? 1)
+                                    }
                                 }else if content.contains(str: "titanium"){
+                                    if splitedItem.count > 1{
+                                        operationResult = .tempUp(Int(splitedItem[1]) ?? 1)
+                                    }
+                                }else if content.contains(str: "special tile"){
+                                    
                                 }else if content.contains(str: "energy"){
+                                    if splitedItem.count > 1{
+                                        operationResult = .tempUp(Int(splitedItem[1]) ?? 1)
+                                    }
                                 }else if content.contains(str: "plant"){
-                                }else if content.contains(str: "heat"){
-                                }else if content.contains(str: "tr"){
-                                }else if content.contains(str: "greenery Tile"){
+                                    if splitedItem.count > 1{
+                                        operationResult = .tempUp(Int(splitedItem[1]) ?? 1)
+                                    }
                                 }else if content.contains(str: "city"){
+                                    if splitedItem.count > 1{
+                                        operationResult = .tempUp(Int(splitedItem[1]) ?? 1)
+                                    }
                                 }else if content.contains(str: "card"){
-                                }else if content.contains(str: "ocean"){
+                                    if splitedItem.count > 1{
+                                        operationResult = .tempUp(Int(splitedItem[1]) ?? 1)
+                                    }
                                 }else if content.contains(str: "microbe"){
+                                    if splitedItem.count > 1{
+                                        operationResult = .tempUp(Int(splitedItem[1]) ?? 1)
+                                    }
                                 }else if content.contains(str: "animal"){
+                                    if splitedItem.count > 1{
+                                        operationResult = .tempUp(Int(splitedItem[1]) ?? 1)
+                                    }
                                 }
                             }
                         }
