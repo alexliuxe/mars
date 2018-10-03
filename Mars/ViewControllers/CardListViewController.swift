@@ -116,20 +116,108 @@ extension PreludeCardCell {
 class CardListViewController: UIViewController{
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var filterView: FilterView!
     
     private var cards: [Card] = []
-    
+    private var tagsFilter: [Tag] = []
+    private var cardTypeFilter: [CardType] = []
+    private var isAccending: Bool = true
+    private var isFilterShowing: Bool = false
     //need to reuse with identifier
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Loader()
-        //PreludeCardLoader()
+        if !isFilterShowing{
+            if filterView != nil{
+                self.removeFilteView()
+            }
+        }
+       // Loader()
+      //  PreludeCardLoader()
         self.cards = Loader.loadCardsFromDb()
+    }
+    
+    @IBAction func filterButtonClick(){
+        if isFilterShowing {
+            if filterView != nil {
+                self.removeFilteView()
+            }
+        }else {
+            self.addFilterView()
+        }
+        
+        isFilterShowing = !isFilterShowing
     }
     
     func getImageFromType(tag: Tag) -> UIImage{
         return tag.rawValue.image()
+    }
+    
+    func addFilterView(){
+        self.filterView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.filterView)
+        self.filterView.delegate = self
+        
+        self.filterView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.filterView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        self.filterView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.filterView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+    }
+    
+    func removeFilteView(){
+        self.filterView.removeFromSuperview()
+    }
+    
+    func reloadTableview(){
+        self.tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.scrollsToTop = true
+        }
+        self.title = "Total: \(self.cards.count)"
+    }
+    
+    //add loading animation if needed.
+    func filter(){
+        //TODO: should update here
+        //load card first
+        self.cards = Loader.loadCardsFromDb()
+        if self.tagsFilter.count == 0 && self.cardTypeFilter.count == 0 {
+            self.removeFilteView()
+            self.reloadTableview()
+            return
+        }
+        //filter by card tags
+        
+        if self.tagsFilter.count != 0 {
+            var tempCards:[Card] = []
+            for tag in self.tagsFilter {
+                tempCards.append(contentsOf: self.cards.filter{ $0.tags.contains(tag) })
+            }
+            
+            self.cards = tempCards
+        }
+        
+        if self.cardTypeFilter.count != 0 {
+            var tempCards2:[Card] = []
+            //filter by card type
+            for cardType in self.cardTypeFilter {
+                tempCards2.append(contentsOf: self.cards.filter{ $0.type == cardType })
+            }
+            
+            self.cards = tempCards2
+        }
+        //ascending or decending, by defaul
+        self.removeFilteView()
+        self.reloadTableview()
+    }
+}
+
+extension CardListViewController: FilterViewProtocol{
+    func filter(tags: [Tag], types: [CardType], accending: Bool) {
+        self.tagsFilter = tags
+        self.cardTypeFilter = types
+        self.isAccending = accending
+        self.filter()
     }
 }
 
