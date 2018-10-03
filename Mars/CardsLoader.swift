@@ -305,7 +305,47 @@ cards.append(contentsOf: preludes)
                 }
                 
                 //get VP from vp secion of
+                var vp = VP.number(0)
                 if let separatorIndex = item.firstIndex(of: "VP: "){
+                    let vpString = item[separatorIndex]
+                    let splitedString = vpString.split(separator: " ")
+                    
+                    if splitedString.count > 1{
+                        let value = splitedString[1]
+                        if let _ = value.index(of: "/"){
+                            let valueAndCondition = value.split(separator: "/")
+                            if valueAndCondition.count > 1 {
+                                var condition: VP.Condition = .other
+                                if valueAndCondition[1] == "animal" {
+                                    condition = .animal(Int(valueAndCondition[1]) ?? 0)
+                                    vp = .condition(condition)
+                                }else if valueAndCondition[1] == "jovian" {
+                                    condition = .jovian(Int(valueAndCondition[1]) ?? 0)
+                                    vp = .condition(condition)
+                                }else if valueAndCondition[1] == "city" {
+                                    condition = .city(Int(valueAndCondition[1]) ?? 0)
+                                    vp = .condition(condition)
+                                }else if valueAndCondition[1] == "titanium" {
+                                    condition = .titanium(Int(valueAndCondition[1]) ?? 0)
+                                    vp = .condition(condition)
+                                }else if valueAndCondition[1] == "microbe" {
+                                    condition = .microbe(Int(valueAndCondition[1]) ?? 0)
+                                    vp = .condition(condition)
+                                }else if valueAndCondition[1] == "plant" {
+                                    condition = .plant(Int(valueAndCondition[1]) ?? 0)
+                                    vp = .condition(condition)
+                                }else if valueAndCondition[1] == "ocean" {
+                                    condition = .ocean(Int(valueAndCondition[1]) ?? 0)
+                                    vp = .condition(condition)
+                                }else if valueAndCondition[1] == "science" {
+                                    condition = .science(Int(valueAndCondition[1]) ?? 0)
+                                    vp = .condition(condition)
+                                }
+                            }
+                        }else { //point only
+                            vp = .number(Int(value) ?? 0)
+                        }
+                    }
                 }
                 
                 if let separatorIndex = item.firstIndex(of: "------\n    "){
