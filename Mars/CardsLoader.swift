@@ -304,6 +304,47 @@ cards.append(contentsOf: preludes)
                     //
                 }
                 
+                if let separatorIndex = item.firstIndex(of: "------\n    "){
+                    if separatorIndex < item.count - 1{
+                        for i in separatorIndex+1 ..< item.count {
+                            let content = item[i].lowercased()
+                            if content.contains(str: "increase"){
+                                
+                            }else if content.contains(str: "decrease") {
+                                
+                            }else if content.contains(str: "remove"){
+                                
+                            }else if content.contains(str: "Special Tile"){
+                                
+                            }else {
+                                let splitedItem = content.split(separator: " ")
+                                if content.contains(str: "tempup"){
+                                    if splitedItem.count > 1{
+                                        let op: OperationResult = .tempUp(Int(splitedItem[1]) ?? 1)
+                                        
+                                    }
+                                }else if content.contains(str: "O2"){
+                                }else if content.contains(str: "$$"){
+                                }else if content.contains(str: "steel"){
+                                }else if content.contains(str: "titanium"){
+                                }else if content.contains(str: "energy"){
+                                }else if content.contains(str: "plant"){
+                                }else if content.contains(str: "heat"){
+                                }else if content.contains(str: "tr"){
+                                }else if content.contains(str: "greenery Tile"){
+                                }else if content.contains(str: "city"){
+                                }else if content.contains(str: "card"){
+                                }else if content.contains(str: "ocean"){
+                                }else if content.contains(str: "microbe"){
+                                }else if content.contains(str: "animal"){
+                                }
+                            }
+                        }
+                    }
+                }else {
+                    //should print something
+                }
+                
                 cards.append(card)
 
             } catch Exception.Error(let type, let message) {

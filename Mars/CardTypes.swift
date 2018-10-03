@@ -349,16 +349,128 @@ extension Requirement: Codable{
     }
 }
 
-enum VP {
-    enum condition{
+enum VP: Codable {
+    enum CodingKeys: CodingKey {
+        case rawValue
+        case associatedValue
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        switch self {
+        case .number(let value):
+            try container.encode(0, forKey: .rawValue)
+            try container.encode(value, forKey: .associatedValue)
+        case .condition(let value):
+            try container.encode(1, forKey: .rawValue)
+            try container.encode(value, forKey: .associatedValue)
+        }
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let rawValue = try container.decode(Int.self, forKey: .rawValue)
+        
+        switch rawValue {
+        case 0:
+            let num = try container.decode(Int.self, forKey: .associatedValue)
+            self = .number(num)
+        case 1:
+            let condition = try container.decode(Condition.self, forKey: .associatedValue)
+            self = .condition(condition)
+        default:
+            throw CodingError.unknownValue
+        }
+    }
+    
+    enum Condition: Codable{
+        
+        enum CodingKeys: CodingKey {
+            case rawValue
+            case associatedValue
+        }
+        
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            switch self {
+            case .animal(let value):
+                try container.encode(0, forKey: .rawValue)
+                try container.encode(value, forKey: .associatedValue)
+            case .jovian(let value):
+                try container.encode(1, forKey: .rawValue)
+                try container.encode(value, forKey: .associatedValue)
+            case .city(let value):
+                try container.encode(2, forKey: .rawValue)
+                try container.encode(value, forKey: .associatedValue)
+            case .titanium(let value):
+                try container.encode(3, forKey: .rawValue)
+                try container.encode(value, forKey: .associatedValue)
+            case .microbe(let value):
+                try container.encode(4, forKey: .rawValue)
+                try container.encode(value, forKey: .associatedValue)
+            case .plant(let value):
+                try container.encode(5, forKey: .rawValue)
+                try container.encode(value, forKey: .associatedValue)
+            case .ocean(let value):
+                try container.encode(6, forKey: .rawValue)
+                try container.encode(value, forKey: .associatedValue)
+            case .science(let value):
+                try container.encode(7, forKey: .rawValue)
+                try container.encode(value, forKey: .associatedValue)
+            case .other:
+                try container.encode(8, forKey: .rawValue)
+            }
+        }
+        
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let rawValue = try container.decode(Int.self, forKey: .rawValue)
+            
+            switch rawValue {
+            case 0:
+                let animalNum = try container.decode(Int.self, forKey: .associatedValue)
+                self = .animal(animalNum)
+            case 1:
+                let jovianNum = try container.decode(Int.self, forKey: .associatedValue)
+                self = .jovian(jovianNum)
+            case 2:
+                let cityNum = try container.decode(Int.self, forKey: .associatedValue)
+                self = .city(cityNum)
+            case 3:
+                let titaniumNum = try container.decode(Int.self, forKey: .associatedValue)
+                self = .titanium(titaniumNum)
+            case 4:
+                let oxygenNum = try container.decode(Int.self, forKey: .associatedValue)
+                self = .microbe(oxygenNum)
+            case 5:
+                let maxOxygenNum = try container.decode(Int.self, forKey: .associatedValue)
+                self = .plant(maxOxygenNum)
+            case 6:
+                let oceanNum = try container.decode(Int.self, forKey: .associatedValue)
+                self = .ocean(oceanNum)
+            case 7:
+                let scienceNum = try container.decode(Int.self, forKey: .associatedValue)
+                self = .science(scienceNum)
+            case 8:
+                self = .other
+            default:
+                throw CodingError.unknownValue
+            }
+        }
+        
         case animal(Int)
         case jovian(Int)
         case city(Int)
         case titanium(Int)
         case microbe(Int)
         case plant(Int)
+        case ocean(Int)
+        case science(Int)
+        case other
     }
+    
     case number(Int)
+    case condition(Condition)
 }
 
 enum OperationResult{
@@ -488,6 +600,7 @@ enum Resources: String, Codable{
     case ocean
     case oxygen
     case temprature
+    case specialTile
 }
 
 enum ResourceType: String, Codable{
@@ -544,7 +657,6 @@ extension Card: CustomDebugStringConvertible{
         "----------------\n"
     }
 }
-
 
 
 enum TestCodable: Codable {
